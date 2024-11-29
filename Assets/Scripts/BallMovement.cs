@@ -1,10 +1,9 @@
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class BallMovement : MonoBehaviour
 {
     public float maxForce = 50f;
-    public Slider forceSlider; // Reference to the UI Slider
     private Rigidbody rb;
     private Vector3 aimDirection;
     private float holdTime;
@@ -17,16 +16,14 @@ public class BallMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
 
+        if (rb == null)
+        {
+            Debug.LogError("Rigidbody component is missing from the ball.");
+            return;
+        }
+
         rb.linearDamping = 1f;
         rb.angularDamping = 1f;
-
-        if (forceSlider != null)
-        {
-            forceSlider.minValue = 0f;
-            forceSlider.maxValue = maxForce;
-            forceSlider.value = 0f;
-            forceSlider.interactable = true;
-        }
 
         // Initialize the LineRenderer
         lineRenderer = gameObject.AddComponent<LineRenderer>();
@@ -40,6 +37,9 @@ public class BallMovement : MonoBehaviour
 
     void Update()
     {
+        if (rb == null)
+            return;
+
         // Cache the ball's velocity magnitude
         float velocityMagnitude = rb.linearVelocity.magnitude;
 
@@ -49,7 +49,7 @@ public class BallMovement : MonoBehaviour
             initialMousePosition = Input.mousePosition;
 
             // Perform a raycast to check if the initial click is on the ball
-            Ray ray = Camera.main.ScreenPointToRay(initialMousePosition);
+            Ray ray = GetActiveCamera().ScreenPointToRay(initialMousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
@@ -73,8 +73,8 @@ public class BallMovement : MonoBehaviour
             Vector3 dragVector = currentMousePosition - initialMousePosition;
 
             // Convert screen space drag vector to world space
-            Ray initialRay = Camera.main.ScreenPointToRay(initialMousePosition);
-            Ray currentRay = Camera.main.ScreenPointToRay(currentMousePosition);
+            Ray initialRay = GetActiveCamera().ScreenPointToRay(initialMousePosition);
+            Ray currentRay = GetActiveCamera().ScreenPointToRay(currentMousePosition);
             Plane plane = new Plane(Vector3.up, transform.position);
             float initialDistance, currentDistance;
             plane.Raycast(initialRay, out initialDistance);
@@ -86,16 +86,6 @@ public class BallMovement : MonoBehaviour
             // Calculate the clamped force based on drag distance
             float dragDistance = dragVector.magnitude;
             float clampedForce = Mathf.Clamp(dragDistance, 0, maxForce);
-
-            // Update the Slider value based on drag distance
-            if (forceSlider != null && velocityMagnitude < 0.1f)
-            {
-                forceSlider.value = clampedForce;
-
-                // Update the slider position to indicate the trajectory
-                Vector3 predictedPosition = transform.position + (-aimDirection * clampedForce * 0.25f); // Shorter line
-                forceSlider.transform.position = Camera.main.WorldToScreenPoint(predictedPosition);
-            }
 
             // Update the trajectory line
             lineRenderer.positionCount = 2;
@@ -116,20 +106,38 @@ public class BallMovement : MonoBehaviour
             // Invert the direction and scale down the force
             rb.AddForce(-aimDirection * clampedForce * 0.5f, ForceMode.Impulse);
 
-            // Reset the Slider value
-            if (forceSlider != null)
-            {
-                forceSlider.value = 0f;
-            }
-
             // Clear the trajectory line
             lineRenderer.positionCount = 0;
         }
+    }
 
-        // Disable slider interaction while the ball is moving
-        if (forceSlider != null)
+    private Camera GetActiveCamera()
+    {
+        // Return the currently active camera
+        if (Camera.main != null && Camera.main.isActiveAndEnabled)
         {
-            forceSlider.interactable = velocityMagnitude < 0.1f;
+            return Camera.main;
+        }
+
+        Camera[] cameras = Camera.allCameras;
+        foreach (Camera cam in cameras)
+        {
+            if (cam.isActiveAndEnabled)
+            {
+                return cam;
+            }
+        }
+
+        Debug.LogError("No active camera found!");
+        return null;
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("LevelExit"))
+        {
+            Debug.Log("Level Complete!");
+            SceneManager.LoadScene(0);
         }
     }
 }

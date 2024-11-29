@@ -140,4 +140,13 @@ public class BallMovement : MonoBehaviour
             SceneManager.LoadScene(0);
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("DeathZone"))
+        {
+            Debug.Log("You died!");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+    }
 }

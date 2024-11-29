@@ -137,9 +137,21 @@ public class BallMovement : MonoBehaviour
         if (other.gameObject.CompareTag("LevelExit"))
         {
             Debug.Log("Level Complete!");
+            UnlockNewLevel();
             SceneManager.LoadScene(0);
         }
     }
+
+    void UnlockNewLevel()
+    {
+        if(SceneManager.GetActiveScene().buildIndex >= PlayerPrefs.GetInt("ReachedIndex"))
+        {
+            PlayerPrefs.SetInt("ReachedIndex", SceneManager.GetActiveScene().buildIndex + 1);
+            PlayerPrefs.SetInt("UnlockedLevel", PlayerPrefs.GetInt("UnlockedLevel", 1) + 1);
+            PlayerPrefs.Save();
+        }
+    }
+
 
     private void OnTriggerEnter(Collider other)
     {

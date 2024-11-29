@@ -4,8 +4,8 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - level 2
   - LevelExit
+  - DeathZone
   layers:
   - Default
   - TransparentFX

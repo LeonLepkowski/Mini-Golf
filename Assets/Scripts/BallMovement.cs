@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class BallMovement : MonoBehaviour
 {
@@ -12,8 +13,19 @@ public class BallMovement : MonoBehaviour
     private bool isInitialClickOnBall;
     private LineRenderer lineRenderer;
 
+    public TextMeshProUGUI moveCountText;
+    public TextMeshProUGUI highScoreText;
+    private int moveCount;
+    private int highScore;
+    private string sceneName;
+
     void Start()
     {
+        moveCount = 0;
+        sceneName = SceneManager.GetActiveScene().name;
+        highScore = PlayerPrefs.GetInt(sceneName + "_HighScore", int.MaxValue);
+        UpdateUI();
+
         rb = GetComponent<Rigidbody>();
 
         if (rb == null)
@@ -106,6 +118,10 @@ public class BallMovement : MonoBehaviour
             // Invert the direction and scale down the force
             rb.AddForce(-aimDirection * clampedForce * 0.5f, ForceMode.Impulse);
 
+            // Increment the move count
+            moveCount++;
+            UpdateUI();
+
             // Clear the trajectory line
             lineRenderer.positionCount = 0;
         }
@@ -136,6 +152,15 @@ public class BallMovement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("LevelExit"))
         {
+            if (moveCount < highScore)
+            {
+                highScore = moveCount;
+                PlayerPrefs.SetInt(sceneName + "_HighScore", highScore);
+                PlayerPrefs.Save();
+            }
+            moveCount = 0;
+            UpdateUI();
+
             Debug.Log("Level Complete!");
             UnlockNewLevel();
             SceneManager.LoadScene(0);
@@ -152,13 +177,24 @@ public class BallMovement : MonoBehaviour
         }
     }
 
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("DeathZone"))
         {
-            Debug.Log("You died!");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            if (moveCount < highScore)
+            {
+                highScore = moveCount;
+                PlayerPrefs.SetInt(sceneName + "_HighScore", highScore);
+            }
+            // Reset move count for the next level or retry
+            moveCount = 0;
+            UpdateUI();
         }
+    }
+
+    private void UpdateUI()
+    {
+        moveCountText.text = "Moves: " + moveCount;
+        highScoreText.text = "High Score: " + (highScore == int.MaxValue ? "N/A" : highScore.ToString());
     }
 }

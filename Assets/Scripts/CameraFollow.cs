@@ -16,8 +16,12 @@ public class CameraFollow : MonoBehaviour
         if (target == null)
             return;
 
-        // Calculate the current rotation angle based on input
-        currentRotationAngle += Input.GetAxis("Horizontal") * rotationSpeed;
+        // Check if the right mouse button is held down
+        if (Input.GetMouseButton(1))
+        {
+            // Calculate the current rotation angle based on mouse movement
+            currentRotationAngle += Input.GetAxis("Mouse X") * rotationSpeed;
+        }
 
         // Convert the angle into a rotation
         currentRotation = Quaternion.Euler(0, currentRotationAngle, 0);

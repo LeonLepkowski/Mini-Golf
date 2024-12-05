@@ -4,6 +4,11 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
+    // public void Start() {
+    //     //reset PlayerPrefs
+    //     PlayerPrefs.DeleteAll();        
+    // }
+
     public void QuitGame()
     {
         Application.Quit();
@@ -24,7 +29,7 @@ public class MainMenu : MonoBehaviour
         {
             buttons[i].interactable = false;
         }
-        for (int i = 0; i < UnlockedLevel; i++)
+        for (int i = 0; i < UnlockedLevel && i < buttons.Length; i++)
         {
             buttons[i].interactable = true;
         }

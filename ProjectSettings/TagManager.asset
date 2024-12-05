@@ -6,6 +6,7 @@ TagManager:
   tags:
   - LevelExit
   - DeathZone
+  - Ball
   layers:
   - Default
   - TransparentFX

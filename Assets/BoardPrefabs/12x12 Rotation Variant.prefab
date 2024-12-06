@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 3159714714639844382}
   m_Layer: 0
   m_Name: Wing 1
-  m_TagString: Untagged
+  m_TagString: Rotation
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -365,6 +365,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9af110025794a4a3b9d62eed8f19cd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bounceAmplitude: 0.5
+  bounceFrequency: 1
 --- !u!1 &8266036460002703573
 GameObject:
   m_ObjectHideFlags: 0
@@ -382,7 +384,7 @@ GameObject:
   - component: {fileID: 1909552435818269908}
   m_Layer: 0
   m_Name: Wing 2
-  m_TagString: Untagged
+  m_TagString: Rotation
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -730,6 +732,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9af110025794a4a3b9d62eed8f19cd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bounceAmplitude: 0.5
+  bounceFrequency: 1
 --- !u!1001 &2339006729021563657
 PrefabInstance:
   m_ObjectHideFlags: 0

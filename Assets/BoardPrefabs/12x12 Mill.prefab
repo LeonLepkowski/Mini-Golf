@@ -1147,10 +1147,10 @@ GameObject:
   - component: {fileID: 4976164821474073874}
   - component: {fileID: 7091290563696314071}
   - component: {fileID: 8832243765092160997}
-  - component: {fileID: 1414747572026231222}
+  - component: {fileID: 262820220986750141}
   m_Layer: 0
   m_Name: Wings
-  m_TagString: Untagged
+  m_TagString: Wings
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1654,7 +1654,7 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
---- !u!114 &1414747572026231222
+--- !u!114 &262820220986750141
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1663,9 +1663,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3082460651079130550}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4492dc0025a186f5b547d3ddc332fb3, type: 3}
+  m_Script: {fileID: 11500000, guid: f9af110025794a4a3b9d62eed8f19cd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bounceAmplitude: 0.2
+  bounceFrequency: 1
 --- !u!1 &5260414527810558698
 GameObject:
   m_ObjectHideFlags: 0

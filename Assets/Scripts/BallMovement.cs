@@ -26,6 +26,14 @@ public class BallMovement : MonoBehaviour
         highScore = PlayerPrefs.GetInt(sceneName + "_HighScore", int.MaxValue);
         UpdateUI();
 
+        // Reset Highscores
+        // for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
+        // {
+        //     string sceneName = System.IO.Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(i));
+        //     PlayerPrefs.DeleteKey(sceneName + "_HighScore");
+        // }
+        // PlayerPrefs.Save();
+
         rb = GetComponent<Rigidbody>();
 
         if (rb == null)
@@ -37,24 +45,17 @@ public class BallMovement : MonoBehaviour
         rb.linearDamping = 1f;
         rb.angularDamping = 1f;
 
-        // Initialize the LineRenderer
         lineRenderer = gameObject.AddComponent<LineRenderer>();
-        lineRenderer.startWidth = 0.3f; // Wider line
-        lineRenderer.endWidth = 0.1f;   // Wider line
+        lineRenderer.startWidth = 0.3f;
+        lineRenderer.endWidth = 0.1f;
         lineRenderer.positionCount = 0;
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
-        lineRenderer.startColor = Color.white; // White color
-        lineRenderer.endColor = Color.white;   // White color
+        lineRenderer.startColor = Color.white;
+        lineRenderer.endColor = Color.white;
     }
 
     void Update()
     {
-        if (rb == null)
-            return;
-
-        // Cache the ball's velocity magnitude
-        float velocityMagnitude = rb.linearVelocity.magnitude;
-
         if (Input.GetMouseButtonDown(0))
         {
             holdTime = 0f;
@@ -95,11 +96,9 @@ public class BallMovement : MonoBehaviour
             Vector3 worldCurrentPosition = currentRay.GetPoint(currentDistance);
             aimDirection = (worldCurrentPosition - worldInitialPosition).normalized;
 
-            // Calculate the clamped force based on drag distance
             float dragDistance = dragVector.magnitude;
             float clampedForce = Mathf.Clamp(dragDistance, 0, maxForce);
 
-            // Update the trajectory line
             lineRenderer.positionCount = 2;
             lineRenderer.SetPosition(0, transform.position);
             lineRenderer.SetPosition(1, transform.position + (-aimDirection * clampedForce * 0.15f)); // Shorter line
@@ -109,27 +108,22 @@ public class BallMovement : MonoBehaviour
         {
             isDragging = false;
 
-            // Calculate the clamped force based on drag distance
             Vector3 currentMousePosition = Input.mousePosition;
             Vector3 dragVector = currentMousePosition - initialMousePosition;
             float dragDistance = dragVector.magnitude;
             float clampedForce = Mathf.Clamp(dragDistance, 0, maxForce);
 
-            // Invert the direction and scale down the force
             rb.AddForce(-aimDirection * clampedForce * 0.5f, ForceMode.Impulse);
 
-            // Increment the move count
             moveCount++;
             UpdateUI();
 
-            // Clear the trajectory line
             lineRenderer.positionCount = 0;
         }
     }
 
     private Camera GetActiveCamera()
     {
-        // Return the currently active camera
         if (Camera.main != null && Camera.main.isActiveAndEnabled)
         {
             return Camera.main;
@@ -169,7 +163,7 @@ public class BallMovement : MonoBehaviour
 
     void UnlockNewLevel()
     {
-        if(SceneManager.GetActiveScene().buildIndex >= PlayerPrefs.GetInt("ReachedIndex"))
+        if (SceneManager.GetActiveScene().buildIndex >= PlayerPrefs.GetInt("ReachedIndex"))
         {
             PlayerPrefs.SetInt("ReachedIndex", SceneManager.GetActiveScene().buildIndex + 1);
             PlayerPrefs.SetInt("UnlockedLevel", PlayerPrefs.GetInt("UnlockedLevel", 1) + 1);
@@ -181,14 +175,9 @@ public class BallMovement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("DeathZone"))
         {
-            if (moveCount < highScore)
-            {
-                highScore = moveCount;
-                PlayerPrefs.SetInt(sceneName + "_HighScore", highScore);
-            }
-            // Reset move count for the next level or retry
             moveCount = 0;
             UpdateUI();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 

@@ -14,7 +14,6 @@ public class ButtonTrigger : MonoBehaviour
         {
             isTriggered = true;
         }
-        // Make button dissapear
         GetComponent<Renderer>().enabled = false;
     }
 

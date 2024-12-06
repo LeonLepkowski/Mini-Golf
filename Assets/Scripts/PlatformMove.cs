@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class PlatformMove : MonoBehaviour
 {
-    public float speed = 2f; // Speed of the platform
-    private Vector3 leftBoundary; // Left boundary
-    private Vector3 rightBoundary; // Right boundary
-    private bool movingRight = true; // Direction flag
-    private Vector3 startPosition; // Starting position of the platform
+    public float speed = 2f;
+    private Vector3 leftBoundary;
+    private Vector3 rightBoundary;
+    private bool movingRight = true;
+    private Vector3 startPosition;
 
     void Start()
     {
@@ -17,7 +17,6 @@ public class PlatformMove : MonoBehaviour
 
     void Update()
     {
-        // Move the platform
         if (movingRight)
         {
             transform.Translate(Vector3.right * speed * Time.deltaTime);

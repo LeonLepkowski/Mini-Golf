@@ -6,7 +6,6 @@ public class MainMenu : MonoBehaviour
 {
     // Reset UnlockedLevels
     // public void Start() {
-    //     //reset PlayerPrefs
     //     PlayerPrefs.DeleteAll();        
     // }
 

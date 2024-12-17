@@ -125,6 +125,7 @@ MonoBehaviour:
   door: {fileID: 0}
   doorOpenPosition: {x: 0, y: -0.5, z: 0}
   moveSpeed: 1
+  collectSoundEffect: {fileID: 8300000, guid: e589c4d5353312bda9b7da7719f2f513, type: 3}
 --- !u!114 &-6312058009821947846
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -8,13 +8,21 @@ public class ButtonTrigger : MonoBehaviour
 
     private bool isTriggered = false;
 
+    public AudioClip collectSoundEffect;
+    private AudioSource audioSource;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Ball"))
         {
             isTriggered = true;
         }
+        if (collectSoundEffect != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(collectSoundEffect);
+        }
         GetComponent<Renderer>().enabled = false;
+        GetComponent<Collider>().enabled = false;
     }
 
     private void Update()
@@ -22,6 +30,15 @@ public class ButtonTrigger : MonoBehaviour
         if (isTriggered)
         {
             door.transform.position = Vector3.MoveTowards(door.transform.position, doorOpenPosition, moveSpeed * Time.deltaTime);
+        }
+    }
+
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
         }
     }
 }

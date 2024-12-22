@@ -4,17 +4,13 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-    // Reset UnlockedLevels
-    // public void Start() {
-    //     PlayerPrefs.DeleteAll();        
-    // }
-
     public Slider volumeSlider;
     private AudioManager audioManager;
 
     void Start()
     {
         InitializeVolumeSlider();
+        // PlayerPrefs.DeleteAll();        
     }
 
     private void OnEnable()

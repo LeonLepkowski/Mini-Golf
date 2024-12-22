@@ -3097,7 +3097,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 1
+  m_UiScaleMode: 2
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -3191,7 +3191,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -250, y: -250}
+  m_AnchoredPosition: {x: -46, y: -209.5}
   m_SizeDelta: {x: 146.7999, y: 45}
   m_Pivot: {x: 2.45, y: 0.5}
 --- !u!114 &1161922589
@@ -3684,7 +3684,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 26.580002, y: 0.00000333786}
+  m_AnchoredPosition: {x: 26.580002, y: 15.000004}
   m_SizeDelta: {x: 290, y: 89.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1329858676
@@ -3714,7 +3714,9 @@ MonoBehaviour:
     M - GO BACK TO MENU
 
     C - CHANGE
-    CAMERA'
+    CAMERA
+
+    V - CHANGE DIMENSION'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}

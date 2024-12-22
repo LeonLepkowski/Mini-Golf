@@ -5,7 +5,7 @@ using System.Collections;
 
 public class BallMovement : MonoBehaviour
 {
-    public float maxForce = 50f;
+    public float maxForce = 75f;
     private Rigidbody rb;
     private Vector3 aimDirection;
     private float holdTime;
@@ -20,8 +20,8 @@ public class BallMovement : MonoBehaviour
     private int highScore;
     private string sceneName;
 
-    public AudioClip moveSoundEffect; // Assign this in the Unity Editor
-    public AudioClip holeSoundEffect; // Assign this in the Unity Editor
+    public AudioClip moveSoundEffect;
+    public AudioClip holeSoundEffect;
     private AudioSource audioSource;
 
     void Start()
@@ -42,16 +42,14 @@ public class BallMovement : MonoBehaviour
         rb.linearDamping = 1f;
         rb.angularDamping = 1f;
 
-        // Initialize the LineRenderer
         lineRenderer = gameObject.AddComponent<LineRenderer>();
-        lineRenderer.startWidth = 0.3f; // Wider line
-        lineRenderer.endWidth = 0.1f;   // Wider line
+        lineRenderer.startWidth = 0.3f;
+        lineRenderer.endWidth = 0.1f;
         lineRenderer.positionCount = 0;
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
-        lineRenderer.startColor = Color.white; // White color
-        lineRenderer.endColor = Color.white;   // White color
+        lineRenderer.startColor = Color.white;
+        lineRenderer.endColor = Color.white;
 
-        // Initialize the AudioSource
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
         {
@@ -64,7 +62,6 @@ public class BallMovement : MonoBehaviour
         if (rb == null)
             return;
 
-        // Cache the ball's velocity magnitude
         float velocityMagnitude = rb.linearVelocity.magnitude;
 
         if (Input.GetMouseButtonDown(0))
@@ -72,7 +69,6 @@ public class BallMovement : MonoBehaviour
             holdTime = 0f;
             initialMousePosition = Input.mousePosition;
 
-            // Perform a raycast to check if the initial click is on the ball
             Ray ray = GetActiveCamera().ScreenPointToRay(initialMousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
@@ -96,7 +92,6 @@ public class BallMovement : MonoBehaviour
             Vector3 currentMousePosition = Input.mousePosition;
             Vector3 dragVector = currentMousePosition - initialMousePosition;
 
-            // Convert screen space drag vector to world space
             Ray initialRay = GetActiveCamera().ScreenPointToRay(initialMousePosition);
             Ray currentRay = GetActiveCamera().ScreenPointToRay(currentMousePosition);
             Plane plane = new Plane(Vector3.up, transform.position);
@@ -107,47 +102,47 @@ public class BallMovement : MonoBehaviour
             Vector3 worldCurrentPosition = currentRay.GetPoint(currentDistance);
             aimDirection = (worldCurrentPosition - worldInitialPosition).normalized;
 
-            // Calculate the clamped force based on drag distance
             float dragDistance = dragVector.magnitude;
             float clampedForce = Mathf.Clamp(dragDistance, 0, maxForce);
 
-            // Update the trajectory line
             lineRenderer.positionCount = 2;
             lineRenderer.SetPosition(0, transform.position);
-            lineRenderer.SetPosition(1, transform.position + (-aimDirection * clampedForce * 0.15f)); // Shorter line
+            lineRenderer.SetPosition(1, transform.position + (-aimDirection * clampedForce * 0.15f));
         }
 
         if (Input.GetMouseButtonUp(0) && isDragging && isInitialClickOnBall)
         {
             isDragging = false;
 
-            // Calculate the clamped force based on drag distance
+            if (moveSoundEffect != null && audioSource != null)
+            {
+                audioSource.pitch = 1.5f; 
+                audioSource.PlayOneShot(moveSoundEffect);
+                audioSource.pitch = 1.0f; 
+            }
+
             Vector3 currentMousePosition = Input.mousePosition;
             Vector3 dragVector = currentMousePosition - initialMousePosition;
             float dragDistance = dragVector.magnitude;
             float clampedForce = Mathf.Clamp(dragDistance, 0, maxForce);
 
-            // Invert the direction and scale down the force
-            rb.AddForce(-aimDirection * clampedForce * 0.5f, ForceMode.Impulse);
+            StartCoroutine(ApplyForceAfterDelay(-aimDirection * clampedForce * 0.5f));
 
-            // Play the move sound effect
-            if (moveSoundEffect != null && audioSource != null)
-            {
-                audioSource.PlayOneShot(moveSoundEffect);
-            }
-
-            // Increment the move count
             moveCount++;
             UpdateUI();
 
-            // Clear the trajectory line
             lineRenderer.positionCount = 0;
         }
     }
 
+    private IEnumerator ApplyForceAfterDelay(Vector3 force)
+    {
+        yield return new WaitForSeconds(0.5f);
+        rb.AddForce(force, ForceMode.Impulse);
+    }
+
     private Camera GetActiveCamera()
     {
-        // Return the currently active camera
         if (Camera.main != null && Camera.main.isActiveAndEnabled)
         {
             return Camera.main;
@@ -174,8 +169,14 @@ public class BallMovement : MonoBehaviour
 
             if (holeSoundEffect != null && audioSource != null)
             {
+                Debug.Log("Playing hole sound effect.");
                 audioSource.PlayOneShot(holeSoundEffect);
-                StartCoroutine(WaitAndLoadScene(1.0f)); // Wait for 1 second before loading the next scene
+                StartCoroutine(WaitAndLoadScene(1.0f));
+            }
+            else
+            {
+                Debug.LogWarning("Hole sound effect or audio source is null.");
+                LoadNextScene();
             }
 
             if (moveCount < highScore)

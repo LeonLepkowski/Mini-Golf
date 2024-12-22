@@ -2,24 +2,21 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    public AudioClip backgroundMusic; // Assign this in the Unity Editor
+    public AudioClip backgroundMusic;
     private AudioSource audioSource;
 
     private static AudioManager instance;
 
     void Awake()
     {
-        // Ensure only one instance of AudioManager exists
         if (instance == null)
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
 
-            // Add an AudioSource component to the GameObject
             audioSource = gameObject.AddComponent<AudioSource>();
-            audioSource.loop = true; // Set the AudioSource to loop
+            audioSource.loop = true;
 
-            // Load the saved volume setting
             float savedVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
             SetVolume(savedVolume);
 
@@ -55,6 +52,6 @@ public class AudioManager : MonoBehaviour
     public void SetVolume(float volume)
     {
         audioSource.volume = volume;
-        PlayerPrefs.SetFloat("MusicVolume", volume); // Save the volume setting
+        PlayerPrefs.SetFloat("MusicVolume", volume);
     }
 }

@@ -25,7 +25,7 @@ public class ButtonTrigger : MonoBehaviour
         GetComponent<Collider>().enabled = false;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (isTriggered)
         {

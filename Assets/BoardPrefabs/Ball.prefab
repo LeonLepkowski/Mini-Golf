@@ -124,10 +124,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f1cf4aadbac02fa1a859a486166bf8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxForce: 50
+  maxForce: 75
   moveCountText: {fileID: 0}
   highScoreText: {fileID: 0}
-  moveSoundEffect: {fileID: 8300000, guid: c8fc8e8096ed18ad88f1ce6c3e3870e0, type: 3}
+  moveSoundEffect: {fileID: 8300000, guid: 5baaaf49dc8af924ea4267ba490c7391, type: 3}
   holeSoundEffect: {fileID: 8300000, guid: cbaa5e51fe334772e938e38501e64c56, type: 3}
 --- !u!54 &1427860889568889653
 Rigidbody:
@@ -267,3 +267,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   world1: {fileID: 0}
   world2: {fileID: 0}
+  skybox1: {fileID: 2100000, guid: d98740a68deee8bf9bba061fecbf1e3e, type: 2}
+  skybox2: {fileID: 2100000, guid: d6798b59762ad9f37a293d5836845ac2, type: 2}
+  fadeController: {fileID: 0}
+  portalSoundEffect: {fileID: 8300000, guid: c63875fdf58a96da4b334c64b751c54f, type: 3}

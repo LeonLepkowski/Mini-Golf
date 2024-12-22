@@ -15,7 +15,7 @@ public class PlatformMove : MonoBehaviour
         rightBoundary = startPosition + transform.right * 11f;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (movingRight)
         {
